@@ -100,7 +100,7 @@ app.post("/register", async (req, res) => {
 
 // Rota de login
 app.post("/login", async (req, res) => {
-  const { login, senha } = req.body;
+  const { login, password } = req.body;
 
   try {
     const userResult = await pool.query(
@@ -140,7 +140,7 @@ app.post("/login", async (req, res) => {
     }
 
     const usuario = userResult.rows[0];
-    const senhaValida = await bcrypt.compare(senha, usuario.senhahash);
+    const senhaValida = await bcrypt.compare(password, usuario.senhahash);
     if (!senhaValida) {
       return res.status(401).json({ message: "Credenciais inválidas" });
     }
@@ -149,7 +149,7 @@ app.post("/login", async (req, res) => {
       {
         id: usuario.id,
         email: usuario.email,
-        isAdmin: usuario.isadmin,
+        admin: usuario.admin,
         name: usuario.name,
       },
       SECRET_KEY,
@@ -159,7 +159,7 @@ app.post("/login", async (req, res) => {
     return res.status(200).json({
       id: usuario.id,
       token,
-      isAdmin: usuario.isadmin,
+      admin: usuario.admin,
       name: usuario.name,
       email: usuario.email,
     });
