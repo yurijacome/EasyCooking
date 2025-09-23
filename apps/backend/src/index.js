@@ -57,9 +57,9 @@ async function testDatabaseConnection() {
 
 // Rota de registro
 app.post("/register", async (req, res) => {
-  const { email, nome, senha, isAdmin } = req.body;
+  const { email, name, password, isAdmin } = req.body;
 
-  if (!email || !nome || !senha) {
+  if (!email || !name || !password) {
     return res.status(400).json({ message: "Campos obrigatórios ausentes" });
   }
 
@@ -74,13 +74,13 @@ app.post("/register", async (req, res) => {
 
     const senhaHash = await bcrypt.hash(senha, 10);
     const insertQuery = `
-      INSERT INTO users (email, nome, senhahash, isadmin)
+      INSERT INTO users (email, name, password, isadmin)
       VALUES ($1, $2, $3, $4)
       RETURNING id
     `;
     const insertResult = await pool.query(insertQuery, [
       email,
-      nome,
+      name,
       senhaHash,
       !!isAdmin,
     ]);
@@ -90,7 +90,7 @@ app.post("/register", async (req, res) => {
       message: "Usuário registrado com sucesso",
       success: true,
       id: novoUsuarioId,
-      nome: nome,
+      name: name,
     });
   } catch (error) {
     console.error("Erro ao registrar usuário:", error);
@@ -121,7 +121,7 @@ app.post("/login", async (req, res) => {
         )
         OR
         REGEXP_REPLACE(
-          TRANSLATE(LOWER(nome),
+          TRANSLATE(LOWER(name),
             'áàâãäéèêëíìîïóòôõöúùûüç',
             'aaaaaeeeeiiiiooooouuuuc'
           ),
@@ -150,7 +150,7 @@ app.post("/login", async (req, res) => {
         id: usuario.id,
         email: usuario.email,
         isAdmin: usuario.isadmin,
-        nome: usuario.nome,
+        name: usuario.name,
       },
       SECRET_KEY,
       { expiresIn: "1h" }
@@ -160,9 +160,8 @@ app.post("/login", async (req, res) => {
       id: usuario.id,
       token,
       isAdmin: usuario.isadmin,
-      nome: usuario.nome,
+      name: usuario.name,
       email: usuario.email,
-      phone: usuario.phone || "",
     });
   } catch (error) {
     console.error("Erro ao fazer login:", error);
@@ -174,7 +173,7 @@ app.post("/login", async (req, res) => {
 app.post("/check-user", async (req, res) => {
   const { field, value } = req.body;
 
-  if (!["email", "nome"].includes(field)) {
+  if (!["email", "name"].includes(field)) {
     return res.status(400).json({ message: "Campo inválido" });
   }
 
@@ -192,9 +191,9 @@ app.post("/check-user", async (req, res) => {
 
 // Rota de login com Google
 app.post("/google-login", async (req, res) => {
-  const { email, nome } = req.body;
+  const { email, name } = req.body;
 
-  if (!email || !nome) {
+  if (!email || !name) {
     return res.status(400).json({ message: "Campos obrigatórios ausentes" });
   }
 
@@ -206,8 +205,8 @@ app.post("/google-login", async (req, res) => {
       // Registrar novo usuário
       const senhaHash = await bcrypt.hash("google", 10); // senha dummy
       const insertResult = await pool.query(
-        "INSERT INTO users (email, nome, senhahash, isadmin) VALUES ($1, $2, $3, $4) RETURNING *",
-        [email, nome, senhaHash, false]
+        "INSERT INTO users (email, name, senhahash, isadmin) VALUES ($1, $2, $3, $4) RETURNING *",
+        [email, name, senhaHash, false]
       );
       usuario = insertResult.rows[0];
     } else {
@@ -219,7 +218,7 @@ app.post("/google-login", async (req, res) => {
         id: usuario.id,
         email: usuario.email,
         isAdmin: usuario.isadmin,
-        nome: usuario.nome,
+        name: usuario.name,
       },
       SECRET_KEY,
       { expiresIn: "1h" }
@@ -229,9 +228,8 @@ app.post("/google-login", async (req, res) => {
       id: usuario.id,
       token,
       isAdmin: usuario.isadmin,
-      nome: usuario.nome,
+      name: usuario.name,
       email: usuario.email,
-      phone: usuario.phone || "",
     });
   } catch (error) {
     console.error("Erro ao fazer login com Google:", error);
@@ -247,7 +245,7 @@ app.post("/google-login", async (req, res) => {
 app.get("/users", async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT id, email, nome, phone, mensalidade, isadmin FROM users"
+      "SELECT id, email, name, admin FROM users"
     );
     res.status(200).json(result.rows);
   } catch (error) {
@@ -262,7 +260,7 @@ app.get("/users/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const result = await pool.query(
-      "SELECT id, email, nome, phone, mensalidade, isadmin FROM users WHERE id = $1",
+      "SELECT id, email, name, admin FROM users WHERE id = $1",
       [id]
     );
     if (result.rows.length === 0) {
@@ -374,7 +372,7 @@ app.patch("/user/:id/password", async (req, res) => {
       UPDATE users
       SET senhahash = $1
       WHERE id = $2
-      RETURNING id, email, nome, phone
+      RETURNING id, email, name, phone
     `;
 
     const result = await pool.query(updateQuery, [novaSenhaHash, userId]);
