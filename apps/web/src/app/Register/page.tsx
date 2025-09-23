@@ -22,7 +22,7 @@ export default function Register() {
   const [admin, setAdmin] = useState(false);
   const [newUser, setNewUser] = useState<User | null>(null);
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
 
     if (!email || !name || !password || !confirmPassword) {
       toast.error('Preencha todos os campos.');
@@ -40,11 +40,16 @@ export default function Register() {
       admin
     }
 
-    // Lógica de registro aqui
-    setNewUser(registerData);
-    createUser(newUser);
-    console.log('newUser', newUser);
-    toast.success('Cadastro realizado com sucesso!');
+    try {
+      // Lógica de registro aqui
+      setNewUser(registerData);
+      await createUser(registerData);
+      console.log('newUser', registerData);
+      toast.success('Cadastro realizado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao registrar usuário:', error);
+      toast.error('Erro ao registrar usuário. Tente novamente.');
+    }
   };
 
   return (

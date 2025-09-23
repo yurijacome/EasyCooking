@@ -72,7 +72,7 @@ app.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Usuário já existe" });
     }
 
-    const senhaHash = await bcrypt.hash(senha, 10);
+    const senhaHash = await bcrypt.hash(password, 10);
     const insertQuery = `
       INSERT INTO users (email, name, password, admin)
       VALUES ($1, $2, $3, $4)
