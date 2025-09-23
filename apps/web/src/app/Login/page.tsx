@@ -16,13 +16,16 @@ export default function Login() {
   const { login } = useUserContext();
   const router = useRouter();
 
+  // Função para lidar com o clique no botão de login
   const handleLogin = async () => {
 
+    // Verificar se os campos de email e senha foram preenchidos
     if (!email || !password) {
       toast.error('Por favor, preencha todos os campos.');
       return;
     }
 
+    // Chamar a função de login
     try {
       await login(email, password);
       toast.success('Login realizado com sucesso!');

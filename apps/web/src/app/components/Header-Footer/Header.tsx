@@ -18,11 +18,12 @@ const Header = () => {
     const { logout } = useUserContext();
 
 
-
+  // Função para lidar com a navegação
   const handleNavigation = (component: string) => {
     setActiveComponent(component);
   };
 
+  // Função para lidar com o logout
   const handleLogout = async () => {
     const confirmLogout = window.confirm("Deseja deslogar?");
     if (!confirmLogout) {
@@ -30,6 +31,18 @@ const Header = () => {
     }
     // Sign out from NextAuth
     await logout();
+  };
+
+  // Função para lidar com os Navs 
+  const Navigator = ({ classname }: { classname: string }) => {
+    return (
+      <div className={classname}>
+        <button onClick={() => handleNavigation("component2")}>component2</button>
+        <button onClick={() => handleNavigation("component3")}>component3</button>
+        <button onClick={() => handleNavigation("component4")}>component4</button>
+        <button onClick={() => handleNavigation("Perfil")}>Perfil</button>
+      </div>
+    );
   };
 
   return (
@@ -44,32 +57,7 @@ const Header = () => {
       <span className="user">{user?.name}</span>
       </div>
 
-      <nav>
-        <button
-          onClick={() => handleNavigation("component2")}
-          className="NavButton"
-        >
-          component
-        </button>
-        <button
-          onClick={() => handleNavigation("component3")}
-          className="NavButton"
-        >
-          component2
-        </button>
-        <button
-          onClick={() => handleNavigation("component4")}
-          className="NavButton"
-        >
-          component3
-        </button>
-        <button
-          onClick={() => handleNavigation("Perfil")}
-          className="NavButton"
-        >
-          Perfil
-        </button>
-      </nav>
+      <Navigator classname="HeaderNav" />
 
       <button
         className="userButton"
@@ -80,36 +68,12 @@ const Header = () => {
       </button>
       {sidebarOpen && (
         <div
-          className="sidebarOverlay"
-          onClick={() => setSidebarOpen(false)}
-        >
-          <aside className="sidebar" onClick={(e) => e.stopPropagation()}>
-            <span className="sidebarSpan">{"Menu"}</span>
+          className="SidebarNavOverlay"
+          onClick={() => setSidebarOpen(false)}>
+            <span >{"Menu"}</span>
 
-        <button
-          onClick={() => handleNavigation("Perfil")}
-          className="sidebarButton"
-        >
-          Perfil
-        </button>
-        <button
-          onClick={() => handleNavigation("component2")}
-          className="sidebarButton"
-        >
-          component2
-        </button>
-        <button
-          onClick={() => handleNavigation("component3")}
-          className="sidebarButton"
-        >
-          component3
-        </button>
-        <button
-          onClick={() => handleNavigation("component4")}
-          className="sidebarButton"
-        >
-          component4
-        </button>
+            <Navigator classname="SidebarNav" />
+
 
             <button className="sidebarButton" onClick={handleLogout}>
               Deslogar
@@ -117,11 +81,9 @@ const Header = () => {
 
             <button
               className="sidebarButton Close"
-              onClick={() => setSidebarOpen(false)}
-            >
+              onClick={() => setSidebarOpen(false)}>
               Fechar
             </button>
-          </aside>
         </div>
       )}
 

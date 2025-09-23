@@ -20,17 +20,21 @@ export default function Register() {
   const router = useRouter();
 
 
+  // Função para lidar com o clique no botão de login
   const handleRegister = async () => {
 
+    // Verificar se os campos de email e senha foram preenchidos
     if (!email || !name || !password || !confirmPassword) {
       toast.error('Preencha todos os campos.');
       return;
     }
+    // Verificar se as senhas coincidem
     if (password !== confirmPassword) {
       toast.error('As senhas não coincidem.');
       return;
     }
 
+    // dados do novo usuário
     const registerData = {
       email,
       name,
@@ -38,6 +42,7 @@ export default function Register() {
       admin
     }
 
+    // Chamar a função de login
     try {
       await register(name, email, password);
       console.log('newUser', registerData);
