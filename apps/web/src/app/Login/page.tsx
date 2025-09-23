@@ -42,6 +42,7 @@ export default function Login() {
       await login(email, password);
       toast.success('Login realizado com sucesso!');
       router.push('/Home');
+      console.log('Login realizado com sucesso!');
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
       toast.error(`Erro ao logar - ${errorMessage}`);

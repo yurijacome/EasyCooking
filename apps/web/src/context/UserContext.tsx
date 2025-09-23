@@ -44,7 +44,6 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [token, setToken] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeComponent, setActiveComponent] = useState<string | null>(null);
-  const router = useRouter();
 
   // Load token from localStorage on mount and fetch user
   useEffect(() => {
@@ -68,6 +67,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setToken(data.token);
       setIsLoggedIn(true);
       localStorage.setItem('userToken', data.token);
+      console.log('Login realizado com sucesso!');
     } catch (error) {
       throw error;
     }
