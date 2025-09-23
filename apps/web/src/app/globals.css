@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+:root {
+  --fixedColor: #ffffff;
+
+  --mainColor3: #ff0000;
+
+  --error: #ff0000;
+  --success: #00ff00;
+  --warning: #ffff00;
+  --info: #0000ff;
+
+}
+
+html.light {
+  --background: #ffffff;
+  --foreground: #000000;
+
+  --mainColor1: #ffffff;
+  --mainColor2: #c4c4c4;
+  --mainColor4: #ff7f50;
+
+  --textColor: #171717;
+
+  --Shadow: 0 4px 6px rgba(0, 0, 0, 0.452);
+}
+
+html.dark {
+  --background: #000000;
+  --foreground: #fffefe;
+
+  --mainColor1: #0a0a0a;
+  --mainColor2: #2b2b2b;
+  --mainColor4: #ff7f50;
+
+  --Shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+
+  --textColor: #ffffff;
+}
+
+
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1{
+  color: var(--textColor);
+  font-size: 2.0rem;
+  font-weight: 700;
+}
+h4{
+  color: var(--textColor);
+}
+
+span{
+  color: var(--mainColor3);
+  font-weight: 600;
+}
+
+button{
+  cursor: pointer;
+}
+
+.MainPage{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--mainColor2);
+}
+
+.Component{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  background-color: var(--mainColor2);
+}
+
+.LandingPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--background);
+}

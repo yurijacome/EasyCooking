@@ -1,0 +1,186 @@
+header {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--mainColor1);
+}
+
+footer {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--mainColor1);
+  color: var(--textColor);
+  font-size: 12px;
+}
+
+
+.logo {
+  width: 160px;
+  object-fit: cover;
+  margin-left: 30px;
+}
+
+.welcome {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  height: 100px;
+
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+
+}
+Nav button {
+  margin-right: 20px;
+  color: var(--textColor);
+  text-decoration: none;
+  font-size: 22px;
+  font-weight: 500;
+  background: none;
+}
+Nav button:hover {
+  color: var(--mainColor3);
+}
+
+.userButton {
+  margin-right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--mainColor3);
+  font-size: 32px;
+}
+.userButton:hover {
+  scale: 1.1;
+  box-shadow: 0 0 1px 1px var(--mainColor2);
+  border-radius:  50px;
+}
+
+.sidebar{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 220px;
+  height: 100%;
+  background-color: var(--mainColor1);
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  z-index: 1000;
+}
+.sidebarOverlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.sidebarSpan{
+  color: var(--textColor);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.sidebarButton{
+  padding: 10px;
+  margin-top: 15px;
+  width: 150px;
+  border-radius: 8px;
+  background: var(--mainColor3);
+  color: var(--fixedColor);
+  border: none;
+
+  &&:hover{
+    scale: 1.1;
+    box-shadow: var(--Shadow);
+  }
+}
+.sidebarButton.Close{
+  background: none;
+  color: var(--mainColor2);
+}
+
+.themeButton{
+  margin-left: 20px;
+  background: none;
+  border: none;
+  color: var(--mainColor3);
+  font-size: 28px;
+}
+
+
+@media (max-width: 710px) {
+
+  .logo {
+    margin-left: 10px;
+
+  }
+
+  nav {
+  display: none;
+  }
+
+
+  
+}
+
+
+
+@media (max-width: 550px) {
+
+  .logo {
+    margin-left: 1px;
+
+  }
+
+  .welcome{
+      flex-direction: column;
+      min-width: 120px;
+      margin-left: -20px;
+
+
+  }
+
+
+
+  userButton {
+    margin-right: 40px;
+
+  }
+  nav {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100%;
+    width: 100px;
+    min-width: 100px;
+    margin-left: 10px;
+  }
+
+  Nav button {
+    font-size: 16px;
+    margin-right: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+}
