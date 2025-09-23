@@ -140,7 +140,7 @@ app.post("/login", async (req, res) => {
     }
 
     const usuario = userResult.rows[0];
-    const senhaValida = await bcrypt.compare(password, usuario.senhahash);
+    const senhaValida = await bcrypt.compare(password, usuario.password);
     if (!senhaValida) {
       return res.status(401).json({ message: "Senha incorreta" });
     }
