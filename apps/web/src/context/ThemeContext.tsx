@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-export default function ThemeInitializer() {
+export default function ThemeProvider() {
   useEffect(() => {
     // Set light theme as default if no theme is currently set
     const html = document.documentElement;

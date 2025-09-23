@@ -43,6 +43,7 @@ footer {
   justify-content: flex-start;
 
 }
+
 .HeaderNav button {
   margin-right: 20px;
   color: var(--textColor);
@@ -92,8 +93,13 @@ footer {
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
 }
-
-.Sidebar Span{
+.SidebarNavContent{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.SidebarNav Span{
   color: var(--textColor);
   font-size: 20px;
   font-weight: 600;

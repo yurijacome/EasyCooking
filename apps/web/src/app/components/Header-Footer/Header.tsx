@@ -29,7 +29,7 @@ const Header = () => {
     if (!confirmLogout) {
       return;
     }
-    // Sign out from NextAuth
+    // Sign out from NextAuth and clear local session
     await logout();
   };
 
@@ -70,20 +70,19 @@ const Header = () => {
         <div
           className="SidebarNavOverlay"
           onClick={() => setSidebarOpen(false)}>
-            <span >{"Menu"}</span>
+            <div className="SidebarNav">
+              <span >{"Menu"}</span>
+              <Navigator classname="SidebarNavContent" />
 
-            <Navigator classname="SidebarNav" />
-
-
-            <button className="sidebarButton" onClick={handleLogout}>
-              Deslogar
-            </button>
-
-            <button
-              className="sidebarButton Close"
-              onClick={() => setSidebarOpen(false)}>
-              Fechar
-            </button>
+              <button className="sidebarButton" onClick={handleLogout}>
+                Deslogar
+              </button>
+              <button
+                className="sidebarButton Close"
+                onClick={() => setSidebarOpen(false)}>
+                Fechar
+              </button>
+            </div>
         </div>
       )}
 

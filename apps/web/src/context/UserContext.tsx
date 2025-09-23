@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { loginUser, createUser, getUserById } from '../services/UserServices';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 
 interface User {
@@ -72,13 +73,13 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
     setToken(null);
     setIsLoggedIn(false);
     localStorage.removeItem('userToken');
-    //mandar para login
-    router.push('/Login');
+    // Sign out from NextAuth to unlink Google session
+    await signOut({ callbackUrl: '/Login' });
   };
 
   const register = async (name: string, email: string, password: string) => {

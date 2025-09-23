@@ -1,20 +1,32 @@
 'use client';
 import Image from "next/image";
 import "./page.css"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaGoogle } from "react-icons/fa";
 import Footer from "@/app/components/Header-Footer/Footer";
 import {Icons} from "@/app/components/Icons/icons";
 import Toastify from "@/app/components/Toastify/Toastify";
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+
 import { useUserContext } from "@/context/UserContext";
+import { signIn, useSession } from "next-auth/react";
+
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useUserContext();
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  // Redirect to /Home if user is authenticated
+  useEffect(() => {
+    if (status === 'authenticated' && session) {
+      toast.success('Login com Google realizado com sucesso!');
+      router.push('/Home');
+    }
+  }, [status, session, router]);
 
   // Função para lidar com o clique no botão de login
   const handleLogin = async () => {
@@ -35,6 +47,8 @@ export default function Login() {
       toast.error(`Erro ao logar - ${errorMessage}`);
     }
   };
+
+
   
   return (
     <>
@@ -57,7 +71,7 @@ export default function Login() {
         </div>
         <div className="LoginButtons">
           <button className="LoginButton" onClick={handleLogin}>Entrar</button>
-          <button className="GoogleButton"> <FaGoogle className="GoogleIcon" />Entre com o Google</button>
+          <button className="GoogleButton" onClick={() => signIn('google')}> <FaGoogle className="GoogleIcon" />Entre com o Google</button>
           <p>Não tem uma conta? Cadastre-se <a href="/Register">aqui</a> ou entre como <a href="/Home">Convidado</a></p>
         </div>
       </div>
