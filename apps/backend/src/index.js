@@ -57,7 +57,7 @@ async function testDatabaseConnection() {
 
 // Rota de registro
 app.post("/register", async (req, res) => {
-  const { email, name, password, isAdmin } = req.body;
+  const { email, name, password, admin } = req.body;
 
   if (!email || !name || !password) {
     return res.status(400).json({ message: "Campos obrigatórios ausentes" });
@@ -74,7 +74,7 @@ app.post("/register", async (req, res) => {
 
     const senhaHash = await bcrypt.hash(senha, 10);
     const insertQuery = `
-      INSERT INTO users (email, name, password, isadmin)
+      INSERT INTO users (email, name, password, admin)
       VALUES ($1, $2, $3, $4)
       RETURNING id
     `;
@@ -82,7 +82,7 @@ app.post("/register", async (req, res) => {
       email,
       name,
       senhaHash,
-      !!isAdmin,
+      !!admin,
     ]);
     const novoUsuarioId = insertResult.rows[0].id;
 
