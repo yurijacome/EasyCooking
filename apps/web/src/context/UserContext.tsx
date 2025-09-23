@@ -68,6 +68,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsLoggedIn(true);
       localStorage.setItem('userToken', data.token);
       console.log('Login realizado com sucesso!');
+      
     } catch (error) {
       throw error;
     }
@@ -83,14 +84,10 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const register = async (name: string, email: string, password: string) => {
+    
     try {
       const data = await createUser({ name, email, password });
-      setToken(data.token);
-      setIsLoggedIn(true);
-      if (data.user) {
-        setUser(data.user);
-      }
-      localStorage.setItem('userToken', data.token);
+      console.log('Cadastro realizado com sucesso!', data);
     } catch (error) {
       throw error;
     }
