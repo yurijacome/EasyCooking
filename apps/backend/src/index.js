@@ -14,10 +14,29 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'easycooking-delta.vercel.app'], // Allow localhost and production domain
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, etc.)
+    if (!origin) return callback(null, true);
+
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'https://easycookingbackend.onrender.com',
+      'easycooking-delta.vercel.app',
+      'https://easycooking-delta.vercel.app'
+    ];
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('Blocked CORS request from origin:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar']
 }));
 app.use(express.json());
 
