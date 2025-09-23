@@ -15,6 +15,9 @@
    - Added logic to fetch user data from backend using email
    - Updated backend to support filtering users by email
 
-4. **Test the Google login flow**
-   - Verify that users are created in the database
-   - Check for any errors during the process
+4. **Test the Google login flow** ⚠️ PENDING
+   - Google OAuth credentials need to be configured in .env.local
+   - Set up GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET
+   - Ensure NEXTAUTH_SECRET is configured
+   - Set up redirect URI in Google Console to match your domain
+   - Once configured, test the login flow to verify users are created in the database
