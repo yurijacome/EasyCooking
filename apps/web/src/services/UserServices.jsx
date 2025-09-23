@@ -20,6 +20,22 @@ export const getUserById = async (id, token) => {
     return response.json();
 };
 
+// Login user
+export const loginUser = async (user) => {
+    const response = await fetch(`${API_BASE_URL}/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.message || 'Erro ao fazer login');
+    }
+    return data;
+};
+
 // Create user
 export const createUser = async (user) => {
     const response = await fetch(`${API_BASE_URL}/register`, {
@@ -29,7 +45,14 @@ export const createUser = async (user) => {
         },
         body: JSON.stringify(user),
     });
-    return response.json();
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Erro ao registrar usuário');
+    }
+
+    return data;
 };
 
 // Update user

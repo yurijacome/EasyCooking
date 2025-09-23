@@ -7,10 +7,15 @@ import Footer from "@/app/components/Header-Footer/Footer";
 import {Icons} from "@/app/components/Icons/icons";
 import Toastify from "@/app/components/Toastify/Toastify";
 import { toast } from 'react-toastify';
+import {loginUser} from "@/services/UserServices";
 
 interface User {
+  id: number;
+  token: string;
   email: string;
+  name: string;
   password: string;
+  admin: boolean;
 }
 
 export default function Login() {
@@ -18,7 +23,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [user, setUser] = useState<User | null>(null);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
 
     if (!email || !password) {
       toast.error('Por favor, preencha todos os campos.');
@@ -30,11 +35,17 @@ export default function Login() {
       password,
     };
 
-    setUser(loginData);
-
-    console.log('Login data:', loginData);
-    console.log('User data:', user);
-    toast.success('Login realizado com sucesso!');
+    try{
+     const data = await loginUser(loginData);
+     toast.success('Login realizado com sucesso!');
+     setUser(data);
+     console.log(data);
+     localStorage.setItem('user', JSON.stringify(data));
+    } catch (error) {
+      //toast exibindo o erro especifico
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      toast.error(`Erro ao logar - ${errorMessage}`);
+    }
   };
   
   return (

@@ -69,7 +69,7 @@ app.post("/register", async (req, res) => {
       [email]
     );
     if (userExistsResult.rows.length > 0) {
-      return res.status(400).json({ message: "Usuário já existe" });
+      return res.status(400).json({ message: "Email já existe" });
     }
 
     const senhaHash = await bcrypt.hash(password, 10);
@@ -136,13 +136,13 @@ app.post("/login", async (req, res) => {
       [login]
     );
     if (userResult.rows.length === 0) {
-      return res.status(401).json({ message: "Credenciais inválidas" });
+      return res.status(401).json({ message: "Email inválido" });
     }
 
     const usuario = userResult.rows[0];
     const senhaValida = await bcrypt.compare(password, usuario.senhahash);
     if (!senhaValida) {
-      return res.status(401).json({ message: "Credenciais inválidas" });
+      return res.status(401).json({ message: "Senha incorreta" });
     }
 
     const token = jwt.sign(

@@ -8,19 +8,13 @@ import { toast } from 'react-toastify';
 import {Icons} from "@/app/components/Icons/icons";
 import {createUser} from "@/services/UserServices";
 
-interface User {
-  email: string;
-  name: string;
-  password: string;
-}
 
 export default function Register() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [admin, setAdmin] = useState(false);
-  const [newUser, setNewUser] = useState<User | null>(null);
+  const [admin] = useState(false);
 
   const handleRegister = async () => {
 
@@ -41,14 +35,14 @@ export default function Register() {
     }
 
     try {
-      // Lógica de registro aqui
-      setNewUser(registerData);
       await createUser(registerData);
       console.log('newUser', registerData);
       toast.success('Cadastro realizado com sucesso!');
     } catch (error) {
-      console.error('Erro ao registrar usuário:', error);
-      toast.error('Erro ao registrar usuário. Tente novamente.');
+      //toast exibindo o erro especifico
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      toast.error(`Erro ao registrar usuário - ${errorMessage}`);
+      
     }
   };
 
