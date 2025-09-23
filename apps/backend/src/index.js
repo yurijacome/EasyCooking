@@ -10,7 +10,19 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
-const SECRET_KEY = process.env.SECRET_KEY;
+
+// Configurar SECRET_KEY com validação
+const SECRET_KEY = process.env.SECRET_KEY || 'fallback-secret-key-for-development-only';
+
+// Validar SECRET_KEY
+if (!process.env.SECRET_KEY) {
+  console.warn('⚠️  AVISO: SECRET_KEY não definida no .env. Usando chave de fallback para desenvolvimento.');
+  console.warn('⚠️  Para produção, defina SECRET_KEY no arquivo .env');
+}
+
+if (SECRET_KEY === 'fallback-secret-key-for-development-only') {
+  console.warn('⚠️  IMPORTANTE: Você está usando a chave de desenvolvimento. Configure uma SECRET_KEY segura para produção!');
+}
 
 // Middleware
 app.use(cors({
@@ -159,7 +171,7 @@ app.post("/login", async (req, res) => {
         name: usuario.name,
       },
       SECRET_KEY,
-      { expiresIn: "6h" }
+      { expiresIn: "1h" }
     );
 
     return res.status(200).json({
