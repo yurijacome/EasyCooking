@@ -23,6 +23,11 @@ app.use(express.json());
 
 app.get("/", async (req, res) => {
   res.send("API funcionando 🚀");
+  
+});
+
+//verificar estatus do bando de dados
+app.get("/status", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW()");
     res.status(200).json(result.rows[0]);
@@ -30,11 +35,6 @@ app.get("/", async (req, res) => {
     console.error("Erro ao buscar status do banco:", error);
     res.status(500).json({ message: "Erro interno do servidor" });
   }
-});
-
-//verificar estatus do bando de dados
-app.get("/status", async (req, res) => {
-  
 });
 
 // Iniciar servidor
