@@ -40,6 +40,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Rota de teste
 app.get("/", async (req, res) => {
   res.send("API funcionando 🚀");
   
@@ -119,7 +120,7 @@ app.post("/register", async (req, res) => {
 
 // Rota de login
 app.post("/login", async (req, res) => {
-  const { login, password } = req.body;
+  const { email, password } = req.body;
 
   try {
     const userResult = await pool.query(
@@ -138,7 +139,7 @@ app.post("/login", async (req, res) => {
           ),
           '\\s', '', 'g'
         )`,
-      [login]
+      [email]
     );
     if (userResult.rows.length === 0) {
       return res.status(401).json({ message: "Email inválido" });

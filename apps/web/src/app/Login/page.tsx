@@ -39,13 +39,14 @@ export default function Login() {
      const data = await loginUser(loginData);
      toast.success('Login realizado com sucesso!');
      setUser(data);
-     console.log(user);
      localStorage.setItem('user', JSON.stringify(data));
     } catch (error) {
       //toast exibindo o erro especifico
       const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
       toast.error(`Erro ao logar - ${errorMessage}`);
     }
+     console.log(loginData);
+
   };
   
   return (
