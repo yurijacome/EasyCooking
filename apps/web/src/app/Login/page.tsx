@@ -39,7 +39,7 @@ export default function Login() {
      const data = await loginUser(loginData);
      toast.success('Login realizado com sucesso!');
      setUser(data);
-     console.log(data);
+     console.log(user);
      localStorage.setItem('user', JSON.stringify(data));
     } catch (error) {
       //toast exibindo o erro especifico

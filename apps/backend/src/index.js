@@ -118,20 +118,6 @@ app.post("/login", async (req, res) => {
             'aaaaaeeeeiiiiooooouuuuc'
           ),
           '\\s', '', 'g'
-        )
-        OR
-        REGEXP_REPLACE(
-          TRANSLATE(LOWER(name),
-            'áàâãäéèêëíìîïóòôõöúùûüç',
-            'aaaaaeeeeiiiiooooouuuuc'
-          ),
-          '\\s', '', 'g'
-        ) = REGEXP_REPLACE(
-          TRANSLATE(LOWER($1),
-            'áàâãäéèêëíìîïóòôõöúùûüç',
-            'aaaaaeeeeiiiiooooouuuuc'
-          ),
-          '\\s', '', 'g'
         )`,
       [login]
     );
@@ -153,7 +139,7 @@ app.post("/login", async (req, res) => {
         name: usuario.name,
       },
       SECRET_KEY,
-      { expiresIn: "1h" }
+      { expiresIn: "6h" }
     );
 
     return res.status(200).json({
