@@ -14,7 +14,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://easycooking-app-ochre.vercel.app'], // Allow localhost and production domain
+  origin: ['http://localhost:3000', 'easycooking-delta.vercel.app'], // Allow localhost and production domain
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']

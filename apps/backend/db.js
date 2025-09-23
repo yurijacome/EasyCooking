@@ -1,12 +1,27 @@
-import pkg from 'pg';
-const { Pool } = pkg;
+import pg from 'pg';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const { Pool } = pg;
 
 const pool = new Pool({
-  user: process.env.DB_USER || 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  database: process.env.DB_NAME || 'easycooking',
-  password: process.env.DB_PASSWORD || '',
-  port: process.env.DB_PORT || 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+  family: 4, // Forçar uso de IPv4 para evitar problemas de conexão IPv6
+});
+
+// Testar conexão
+pool.on('connect', () => {
+  console.log('✅ Conectado ao banco Supabase PostgreSQL');
+});
+
+pool.on('error', (err) => {
+  console.error('❌ Erro na conexão com o banco:', err);
 });
 
 export default pool;
+
