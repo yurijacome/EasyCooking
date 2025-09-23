@@ -21,8 +21,20 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   res.send("API funcionando 🚀");
+  try {
+    const result = await pool.query("SELECT NOW()");
+    res.status(200).json(result.rows[0]);
+  } catch (error) {
+    console.error("Erro ao buscar status do banco:", error);
+    res.status(500).json({ message: "Erro interno do servidor" });
+  }
+});
+
+//verificar estatus do bando de dados
+app.get("/status", async (req, res) => {
+  
 });
 
 // Iniciar servidor
