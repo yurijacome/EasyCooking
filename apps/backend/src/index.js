@@ -82,7 +82,7 @@ app.post("/register", async (req, res) => {
       email,
       name,
       senhaHash,
-      !!admin,
+      admin,
     ]);
     const novoUsuarioId = insertResult.rows[0].id;
 

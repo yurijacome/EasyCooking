@@ -6,6 +6,7 @@ import Footer from "@/app/components/Header-Footer/Footer";
 import Toastify from "@/app/components/Toastify/Toastify";
 import { toast } from 'react-toastify';
 import {Icons} from "@/app/components/Icons/icons";
+import {createUser} from "@/services/UserServices";
 
 interface User {
   email: string;
@@ -18,6 +19,7 @@ export default function Register() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [admin, setAdmin] = useState(false);
   const [newUser, setNewUser] = useState<User | null>(null);
 
   const handleRegister = () => {
@@ -34,11 +36,13 @@ export default function Register() {
     const registerData = {
       email,
       name,
-      password
+      password,
+      admin
     }
 
     // Lógica de registro aqui
     setNewUser(registerData);
+    createUser(newUser);
     console.log('newUser', newUser);
     toast.success('Cadastro realizado com sucesso!');
   };

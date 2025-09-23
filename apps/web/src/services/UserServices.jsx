@@ -21,12 +21,11 @@ export const getUserById = async (id, token) => {
 };
 
 // Create user
-export const createUser = async (user, token) => {
-    const response = await fetch(`${API_BASE_URL}/users`, {
+export const createUser = async (user) => {
+    const response = await fetch(`${API_BASE_URL}/register`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(user),
     });
