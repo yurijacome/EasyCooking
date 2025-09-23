@@ -7,21 +7,14 @@ import Footer from "@/app/components/Header-Footer/Footer";
 import {Icons} from "@/app/components/Icons/icons";
 import Toastify from "@/app/components/Toastify/Toastify";
 import { toast } from 'react-toastify';
-import {loginUser} from "@/services/UserServices";
-
-interface User {
-  id: number;
-  token: string;
-  email: string;
-  name: string;
-  password: string;
-  admin: boolean;
-}
+import { useRouter } from 'next/navigation';
+import { useUserContext } from "@/context/UserContext";
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState<User | null>(null);
+  const { login } = useUserContext();
+  const router = useRouter();
 
   const handleLogin = async () => {
 
@@ -30,23 +23,14 @@ export default function Login() {
       return;
     }
 
-    const loginData = {
-      email,
-      password,
-    };
-
-    try{
-     const data = await loginUser(loginData);
-     toast.success('Login realizado com sucesso!');
-     setUser(data);
-     localStorage.setItem('user', JSON.stringify(data));
+    try {
+      await login(email, password);
+      toast.success('Login realizado com sucesso!');
+      router.push('/Home');
     } catch (error) {
-      //toast exibindo o erro especifico
       const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
       toast.error(`Erro ao logar - ${errorMessage}`);
     }
-     console.log(loginData);
-
   };
   
   return (
@@ -88,3 +72,4 @@ export default function Login() {
     </>
   );
 }
+

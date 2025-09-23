@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ThemeInitializer from "../context/ThemeContext";
+import { UserProvider } from "../context/UserContext";
 
 
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       </head>
       <body>
         <ThemeInitializer />
-        {children}
+        <UserProvider>
+          {children}
+        </UserProvider>
       </body>
     </html>
   );

@@ -6,18 +6,21 @@ import "./style.css";
 
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
-import { signOut } from "next-auth/react";
 import { useUserContext } from "@/context/UserContext";
 
 
 
 const Header = () => {
+      const { user } = useUserContext();
+
   const { setActiveComponent } = useUserContext();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+    const { logout } = useUserContext();
+
 
 
   const handleNavigation = (component: string) => {
-    setActiveComponent(component as 'component' | 'component2' | 'component3' | 'component4');
+    setActiveComponent(component);
   };
 
   const handleLogout = async () => {
@@ -26,7 +29,7 @@ const Header = () => {
       return;
     }
     // Sign out from NextAuth
-    await signOut({ callbackUrl: '/Login' });
+    await logout();
   };
 
   return (
@@ -38,33 +41,33 @@ const Header = () => {
       />
       <div className="welcome">
       <h4>Bem-vindo, </h4>
-      <span className="user">{"Usuário"}</span>
+      <span className="user">{user?.name}</span>
       </div>
 
       <nav>
         <button
-          onClick={() => handleNavigation("component")}
+          onClick={() => handleNavigation("component2")}
           className="NavButton"
         >
           component
         </button>
         <button
-          onClick={() => handleNavigation("component2")}
+          onClick={() => handleNavigation("component3")}
           className="NavButton"
         >
           component2
         </button>
         <button
-          onClick={() => handleNavigation("component3")}
+          onClick={() => handleNavigation("component4")}
           className="NavButton"
         >
           component3
         </button>
         <button
-          onClick={() => handleNavigation("component4")}
+          onClick={() => handleNavigation("Perfil")}
           className="NavButton"
         >
-          component4
+          Perfil
         </button>
       </nav>
 
@@ -83,11 +86,11 @@ const Header = () => {
           <aside className="sidebar" onClick={(e) => e.stopPropagation()}>
             <span className="sidebarSpan">{"Menu"}</span>
 
-                    <button
-          onClick={() => handleNavigation("component")}
+        <button
+          onClick={() => handleNavigation("Perfil")}
           className="sidebarButton"
         >
-          component
+          Perfil
         </button>
         <button
           onClick={() => handleNavigation("component2")}

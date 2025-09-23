@@ -2,11 +2,12 @@
 import Image from "next/image";
 import "./page.css"
 import { useState } from "react";
+import { useRouter } from 'next/navigation';
 import Footer from "@/app/components/Header-Footer/Footer";
 import Toastify from "@/app/components/Toastify/Toastify";
 import { toast } from 'react-toastify';
 import {Icons} from "@/app/components/Icons/icons";
-import {createUser} from "@/services/UserServices";
+import { useUserContext } from "@/context/UserContext";
 
 
 export default function Register() {
@@ -15,6 +16,9 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [admin] = useState(false);
+  const { register } = useUserContext();
+  const router = useRouter();
+
 
   const handleRegister = async () => {
 
@@ -35,9 +39,13 @@ export default function Register() {
     }
 
     try {
-      await createUser(registerData);
+      await register(name, email, password);
       console.log('newUser', registerData);
       toast.success('Cadastro realizado com sucesso!');
+
+      //redirecionar para login
+      router.push('/Login');
+        
     } catch (error) {
       //toast exibindo o erro especifico
       const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
