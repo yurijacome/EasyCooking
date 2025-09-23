@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { loginUser, createUser, getUserById } from '../services/UserServices';
 import { useRouter } from 'next/navigation';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 
 interface User {
@@ -45,6 +45,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeComponent, setActiveComponent] = useState<string | null>(null);
   const router = useRouter();
+  const { data: session, status } = useSession();
 
   // Load token from localStorage on mount and fetch user
   useEffect(() => {
@@ -60,6 +61,32 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     }
   }, []);
+
+  // Handle NextAuth session changes
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user) {
+      setIsLoggedIn(true);
+      // Fetch user data from backend using email
+      if (session.user.email) {
+        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users?email=${session.user.email}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.length > 0) {
+              setUser({
+                id: data[0].id.toString(),
+                name: data[0].name,
+                email: data[0].email,
+                admin: data[0].admin,
+              });
+            }
+          })
+          .catch(error => console.error('Failed to fetch user from backend:', error));
+      }
+    } else if (status === 'unauthenticated') {
+      setIsLoggedIn(false);
+      setUser(null);
+    }
+  }, [session, status]);
 
   const login = async (email: string, password: string) => {
     try {

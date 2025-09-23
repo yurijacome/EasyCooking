@@ -262,9 +262,16 @@ app.post("/google-login", async (req, res) => {
 // Rota para visualizar usuários cadastrados
 app.get("/users", async (req, res) => {
   try {
-    const result = await pool.query(
-      "SELECT id, email, name, admin FROM users"
-    );
+    const { email } = req.query;
+    let query = "SELECT id, email, name, admin FROM users";
+    let values = [];
+
+    if (email) {
+      query += " WHERE email = $1";
+      values = [email];
+    }
+
+    const result = await pool.query(query, values);
     res.status(200).json(result.rows);
   } catch (error) {
     console.error("Erro ao buscar usuários:", error);
