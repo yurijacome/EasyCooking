@@ -42,9 +42,9 @@ export default function Login() {
         toast.success("Login com Google efetuado com sucesso!");
 
         if (data.admin === true) {
-          router.push("/pageAdmin");
+          router.push("/Home");
         } else {
-          router.push("/pageUser");
+          router.push("/Home");
         }
       } else {
         toast.error("Erro ao fazer login com Google");
