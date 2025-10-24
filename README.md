@@ -7,10 +7,12 @@ O projeto consiste em uma aplicação web e uma API, para login de usuarios e ge
 
 ## Estrutura do Projeto
 
+```text
 easycooking/
 ├── web/          # Aplicação frontend Next.js
 ├── backend/      # API backend Nodejs
 └── README.md     # Este arquivo
+```
 
 ## Projetos
 
