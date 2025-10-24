@@ -75,14 +75,22 @@ app.listen(port, "0.0.0.0", () => {
   testDatabaseConnection();
 });
 
-// Testar conexão com banco
-async function testDatabaseConnection() {
-  try {
-    const result = await pool.query("SELECT NOW()");
-    console.log("✅ Conexão com banco testada:", result.rows[0]);
-  } catch (error) {
-    console.error("❌ Erro ao conectar ao banco:", error);
+// Testar conexão com banco com retry
+async function testDatabaseConnection(retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const result = await pool.query("SELECT NOW()");
+      console.log("✅ Conexão com banco testada:", result.rows[0]);
+      return;
+    } catch (error) {
+      console.error(`❌ Erro ao conectar ao banco (tentativa ${i + 1}/${retries}):`, error);
+      if (i < retries - 1) {
+        console.log("⏳ Tentando novamente em 2 segundos...");
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
   }
+  console.error("❌ Falha ao conectar ao banco após todas as tentativas.");
 }
 
 // #region Login e Registro ------------------------------------------------------

@@ -1,7 +1,9 @@
 'use client';
+import { API_BASE_URL } from "@/services/api";
+
 import Image from "next/image";
 import "./page.css"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FaGoogle } from "react-icons/fa";
 import Footer from "@/app/components/Header-Footer/Footer";
 import {Icons} from "@/app/components/Icons/icons";
@@ -19,14 +21,12 @@ export default function Login() {
   const { login } = useUserContext();
   const router = useRouter();
   const { data: session, status } = useSession();
+  
 
-  // Redirect to /Home if user is authenticated
-  useEffect(() => {
-    if (status === 'authenticated' && session) {
-      toast.success('Login com Google realizado com sucesso!');
-      router.push('/Home');
-    }
-  }, [status, session, router]);
+  
+
+
+  
 
   // Função para lidar com o clique no botão de login
   const handleLogin = async () => {
