@@ -34,8 +34,8 @@ app.use(cors({
       'http://localhost:3000',
       'http://localhost:3001',
       'https://easycookingbackend.onrender.com',
-      'easycooking-delta.vercel.app',
-      'https://easycooking-delta.vercel.app'
+      'https://easycooking-beryl.vercel.app',
+
     ];
 
     if (allowedOrigins.indexOf(origin) !== -1) {
