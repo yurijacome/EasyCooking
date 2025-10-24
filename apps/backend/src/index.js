@@ -69,89 +69,13 @@ app.get("/status", async (req, res) => {
   }
 });
 
-// Rota de diagnóstico para conexão com o banco (útil em deploys como Render)
-// - Resolve o host presente em DATABASE_URL
-// - Lista endereços IP resolvidos
-// - Tenta uma conexão TCP ao primeiro IP na porta do banco
-app.get('/debug-db', async (req, res) => {
-  const dbUrl = process.env.DATABASE_URL;
-  if (!dbUrl) return res.status(400).json({ error: 'DATABASE_URL não definida' });
-
-  try {
-    const parsed = new URL(dbUrl);
-    const host = parsed.hostname;
-    const port = parsed.port ? Number(parsed.port) : 5432;
-
-    // DNS lookup
-    const dns = await import('dns').then(m => m.promises);
-    const addresses = await dns.lookup(host, { all: true });
-
-    // Tentar conectar TCP ao primeiro IP
-    const net = await import('net');
-    const ipToTry = addresses[0] && addresses[0].address;
-    const timeoutMs = 5000;
-
-    if (!ipToTry) {
-      return res.status(500).json({ error: 'Não foi possível resolver nenhum IP para o host', host, addresses });
-    }
-
-    await new Promise((resolve, reject) => {
-      const socket = new net.Socket();
-      let settled = false;
-
-      socket.setTimeout(timeoutMs);
-      socket.once('connect', () => {
-        settled = true;
-        socket.destroy();
-        resolve();
-      });
-      socket.once('timeout', () => {
-        if (!settled) {
-          settled = true;
-          socket.destroy();
-          reject(new Error('timeout'));
-        }
-      });
-      socket.once('error', (err) => {
-        if (!settled) {
-          settled = true;
-          socket.destroy();
-          reject(err);
-        }
-      });
-
-      socket.connect(port, ipToTry);
-    });
-
-    res.json({ host, addresses, reachable: true, triedIp: ipToTry, port });
-  } catch (err) {
-    res.status(500).json({ error: err && err.message ? err.message : String(err), details: String(err) });
-  }
-});
-
 // Iniciar servidor
 app.listen(port, "0.0.0.0", () => {
   console.log(`🚀 Servidor rodando em http://localhost:${port}`);
   testDatabaseConnection();
 });
 
-// Testar conexão com banco com retry
-async function testDatabaseConnection(retries = 3) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const result = await pool.query("SELECT NOW()");
-      console.log("✅ Conexão com banco testada:", result.rows[0]);
-      return;
-    } catch (error) {
-      console.error(`❌ Erro ao conectar ao banco (tentativa ${i + 1}/${retries}):`, error);
-      if (i < retries - 1) {
-        console.log("⏳ Tentando novamente em 2 segundos...");
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      }
-    }
-  }
-  console.error("❌ Falha ao conectar ao banco após todas as tentativas.");
-}
+
 
 // #region Login e Registro ------------------------------------------------------
 
@@ -495,16 +419,6 @@ app.delete("/users/:id", async (req, res) => {
     res.status(500).json({ message: "Erro interno do servidor" });
   }
 });
-//#endregion
-
-//#region ----------------------------------------------------------------
-
-
 
 //#endregion
 
-
-//#region -----------------------------------------------------------------
-
-
-//#endregion

@@ -1,43 +1,35 @@
 # EasyCooking - Monorepo
 
-Este é um monorepo contendo os projetos EasyCooking.
+Este é um monorepo contendo o projeto EasyCooking.
+Um projeto fullstack desenvolvido com Next.js e Node.js.
 
-## Estrutura do Projeto 111ccc
+O projeto consiste em uma aplicação web e uma API, para login de usuarios e gerenciamento de receitas.
+
+## Estrutura do Projeto
 
 ```
 easycooking/
 ├── web/          # Aplicação frontend Next.js
-├── backend/      # API backend (em desenvolvimento)
+├── backend/      # API backend Nodejs
 └── README.md     # Este arquivo
 ```
 
 ## Projetos
 
 ### Web (Frontend)
-- **Tecnologia**: Next.js 15.5.3 com TypeScript
+
 - **Localização**: `/web`
+- **Tecnologia**: Next.js, React 19, TypeScript, Tailwind CSS
 - **Scripts**:
   - `npm run dev` - Inicia o servidor de desenvolvimento
   - `npm run build` - Build da aplicação
   - `npm run start` - Inicia o servidor de produção
-  - `npm run lint` - Executa o linter
 
 ### Backend (API)
+
 - **Localização**: `/backend`
-- **Status**: Em desenvolvimento
-
-## Começando
-
-### Frontend
-```bash
-cd web
-npm install
-npm run dev
-```
-
-A aplicação estará disponível em [http://localhost:3000](http://localhost:3000).
-
-## Tecnologias Utilizadas
-
-- **Frontend**: Next.js, React 19, TypeScript, Tailwind CSS
-- **Bibliotecas**: Lucide React, Next Auth, React Toastify
+- **Tecnologia**: Node.js, Express.js e PostgreSQL
+- **Scripts**:
+  - `npm run dev` - Inicia o servidor de desenvolvimento da API
+  - `npm run build` - Build da aplicação
+  - `npm run start` - Inicia o servidor de produção
