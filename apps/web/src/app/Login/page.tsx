@@ -26,7 +26,41 @@ export default function Login() {
   
 
 
-  
+  const handleGoogleLogin = useCallback(async (email: string, name: string) => {
+    try {
+      console.log('Iniciando login com Google:', { email, name });
+      const response = await fetch(`${API_BASE_URL}/google-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // enviar a chave 'name' para corresponder ao backend
+        body: JSON.stringify({ email, name }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        // sucesso: redirecionar conforme perfil
+        toast.success("Login com Google efetuado com sucesso!");
+
+        if (data.admin === true) {
+          router.push("/pageAdmin");
+        } else {
+          router.push("/pageUser");
+        }
+      } else {
+        toast.error("Erro ao fazer login com Google");
+      }
+    } catch (err) {
+      console.error('Erro no handleGoogleLogin:', err);
+      toast.error("Falha ao conectar ao servidor");
+    } 
+  }, [router]);
+
+  // Redirect to /Home if user is authenticated
+  useEffect(() => {
+    if (status === "authenticated" && session?.user) {
+      handleGoogleLogin(session.user.email!, session.user.name!);
+    }
+  }, [session, status, handleGoogleLogin]);
 
   // Função para lidar com o clique no botão de login
   const handleLogin = async () => {

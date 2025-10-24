@@ -290,8 +290,9 @@ app.post("/google-login", async (req, res) => {
     if (userResult.rows.length === 0) {
       // Registrar novo usuário
       const senhaHash = await bcrypt.hash("google", 10); // senha dummy
+      // Usar colunas consistentes com schema.sql: password, admin
       const insertResult = await pool.query(
-        "INSERT INTO users (email, name, senhahash, isadmin) VALUES ($1, $2, $3, $4) RETURNING *",
+        "INSERT INTO users (email, name, password, admin) VALUES ($1, $2, $3, $4) RETURNING *",
         [email, name, senhaHash, false]
       );
       usuario = insertResult.rows[0];
@@ -303,7 +304,7 @@ app.post("/google-login", async (req, res) => {
       {
         id: usuario.id,
         email: usuario.email,
-        isAdmin: usuario.isadmin,
+        admin: usuario.admin,
         name: usuario.name,
       },
       SECRET_KEY,
@@ -313,7 +314,7 @@ app.post("/google-login", async (req, res) => {
     return res.status(200).json({
       id: usuario.id,
       token,
-      isAdmin: usuario.isadmin,
+      admin: usuario.admin,
       name: usuario.name,
       email: usuario.email,
     });
@@ -446,7 +447,7 @@ app.patch("/user/:id/password", async (req, res) => {
 
     const senhaValida = await bcrypt.compare(
       currentPassword,
-      usuario.senhahash
+      usuario.password
     );
     if (!senhaValida) {
       return res.status(401).json({ message: "Senha atual incorreta." });
@@ -456,7 +457,7 @@ app.patch("/user/:id/password", async (req, res) => {
 
     const updateQuery = `
       UPDATE users
-      SET senhahash = $1
+      SET password = $1
       WHERE id = $2
       RETURNING id, email, name, phone
     `;

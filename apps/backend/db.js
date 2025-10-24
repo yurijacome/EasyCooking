@@ -8,9 +8,9 @@ const { Pool } = pg;
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
-  max: 5, // Reduced for Supabase free tier
+  max: 20,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 10000,
+  connectionTimeoutMillis: 2000,
   family: 4, // Forçar uso de IPv4 para evitar problemas de conexão IPv6
 });
 
