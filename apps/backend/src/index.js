@@ -135,7 +135,7 @@ app.get("/api/keep-db-alive", async (req, res) => {
 
 // #region Login e Registro ------------------------------------------------------
 
-// Rota de registro
+// Rota de registro de usuário
 app.post("/register", async (req, res) => {
   const { email, name, password, admin } = req.body;
 
