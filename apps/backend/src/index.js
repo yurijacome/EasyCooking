@@ -154,7 +154,7 @@ app.post("/register", async (req, res) => {
 
     const senhaHash = await bcrypt.hash(password, 10);
     const insertQuery = `
-      INSERT INTO users (email, name, password, admin)
+      INSERT INTO users (email, name, senhahash, admin)
       VALUES ($1, $2, $3, $4)
       RETURNING id
     `;
@@ -272,7 +272,7 @@ app.post("/google-login", async (req, res) => {
       const senhaHash = await bcrypt.hash("google", 10); // senha dummy
       // Usar colunas consistentes com schema.sql: password, admin
       const insertResult = await pool.query(
-        "INSERT INTO users (email, name, password, admin) VALUES ($1, $2, $3, $4) RETURNING *",
+        "INSERT INTO users (email, name, senhaHash, admin) VALUES ($1, $2, $3, $4) RETURNING *",
         [email, name, senhaHash, false]
       );
       usuario = insertResult.rows[0];
