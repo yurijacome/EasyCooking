@@ -70,6 +70,15 @@ app.get("/status", async (req, res) => {
 });
 
 // Iniciar servidor
+async function testDatabaseConnection() {
+  try {
+    await pool.query('SELECT 1');
+    console.log('✅ Conexão com o banco de dados verificada com sucesso.');
+  } catch (error) {
+    console.error('❌ Erro ao testar conexão com o banco de dados:', error);
+  }
+}
+
 app.listen(port, "0.0.0.0", () => {
   console.log(`🚀 Servidor rodando em http://localhost:${port}`);
   testDatabaseConnection();
