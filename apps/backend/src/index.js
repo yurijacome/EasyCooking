@@ -79,7 +79,7 @@ app.listen(port, "0.0.0.0", () => {
 app.get("/health", (req, res) => {
   return res.status(200).json({
     ok: true,
-    service: "RingStrike API",
+    service: "EasyCooking Api",
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
