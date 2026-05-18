@@ -255,7 +255,7 @@ app.post("/check-user", async (req, res) => {
   }
 });
 
-// Rota de login com Google
+// Rota de login com Google - registra usuário se não existir, ou loga normalmente se já existir
 app.post("/google-login", async (req, res) => {
   const { email, name } = req.body;
 
@@ -268,7 +268,7 @@ app.post("/google-login", async (req, res) => {
 
     let usuario;
     if (userResult.rows.length === 0) {
-      // Registrar novo usuário
+      // Registrar novo usuário se não existir
       const senhaHash = await bcrypt.hash("google", 10); // senha dummy
       // Usar colunas consistentes com schema.sql: password, admin
       const insertResult = await pool.query(
