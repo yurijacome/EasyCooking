@@ -75,6 +75,53 @@ app.listen(port, "0.0.0.0", () => {
   testDatabaseConnection();
 });
 
+// Rota de health check para cron e monitoramento
+app.get("/health", (req, res) => {
+  return res.status(200).json({
+    ok: true,
+    service: "RingStrike API",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  });
+});
+// Rota de health check para db
+app.get("/db-health", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT NOW()");
+
+    return res.status(200).json({
+      ok: true,
+      db: "connected",
+      timestamp: result.rows[0].now,
+    });
+  } catch (error) {
+    console.error("DB Health Error:", error);
+
+    return res.status(500).json({
+      ok: false,
+      db: "disconnected",
+      error: error.message,
+    });
+  }
+});
+// Rota de keep alive do db
+app.get("/api/keep-db-alive", async (req, res) => {
+  try {
+    await pool.query("SELECT id FROM users LIMIT 1");
+
+    return res.status(200).json({
+      ok: true,
+      message: "Database awake",
+    });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      ok: false,
+      error: err.message,
+    });
+  }
+});
 
 
 // #region Login e Registro ------------------------------------------------------
