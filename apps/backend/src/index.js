@@ -204,12 +204,13 @@ app.post("/login", async (req, res) => {
     if (userResult.rows.length === 0) {
       return res.status(401).json({ message: "Email inválido" });
     }
-
+//atualizar comparação de senha com senhahash
     const usuario = userResult.rows[0];
-    const senhaValida = await bcrypt.compare(password, usuario.password);
+    const senhaValida = await bcrypt.compare(password, usuario.senhahash);
     if (!senhaValida) {
       return res.status(401).json({ message: "Senha incorreta" });
     }
+    
 
     const token = jwt.sign(
       {
