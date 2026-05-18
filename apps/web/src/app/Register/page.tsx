@@ -28,7 +28,7 @@ export default function Register() {
       toast.error('Preencha todos os campos.');
       return;
     }
-    // Verificar se as senhas coincidem
+    // Verificar se as senhas coincidem antes de tentar registrar
     if (password !== confirmPassword) {
       toast.error('As senhas não coincidem.');
       return;
